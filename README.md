@@ -45,7 +45,7 @@ Route: /
 - Embed Code (For websites/apps)
 - Related images (suggest similar Islamic content)
 ```
-Route: /image/{slug} (e.g., /image/beautiful-islamic-quote)
+Route: /images/{slug} (e.g., /image/beautiful-islamic-quote)
 ```
 
 ### Allah’s Names Page
@@ -136,6 +136,91 @@ CREATE TABLE shares (
 | POST   | /api/images/{id}/share      | Increase share count (WhatsApp tracking) | id (Image ID) |
 | POST   | /api/images/{id}/download   | Increase download count         | id (Image ID) |
 | POST   | /api/images/{id}/view       | Increase view count             | id (Image ID) |
+
+## Directory
+```
+/project-root
+│── /backend (Laravel Backend)
+│   ├── /app
+│   │   ├── /Console
+│   │   ├── /Exceptions
+│   │   ├── /Http
+│   │   │   ├── /Controllers
+│   │   │   │   ├── ApiController.php
+│   │   │   │   ├── AuthController.php
+│   │   │   │   ├── ImageController.php
+│   │   │   │   ├── AdminController.php
+│   │   │   ├── /Middleware
+│   │   │   │   ├── Authenticate.php
+│   │   │   │   ├── Cors.php
+│   │   ├── /Models
+│   │   │   ├── User.php
+│   │   │   ├── Image.php
+│   │   │   ├── Admin.php
+│   │   ├── /Providers
+│   ├── /bootstrap
+│   ├── /config
+│   ├── /database
+│   │   ├── /factories
+│   │   ├── /migrations
+│   │   │   ├── 2024_xx_xx_create_users_table.php
+│   │   │   ├── 2024_xx_xx_create_images_table.php
+│   ├── /public
+│   │   ├── index.php
+│   ├── /resources
+│   │   ├── /views (For Blade templates, if needed)
+│   ├── /routes
+│   │   ├── api.php  (API Routes)
+│   │   ├── web.php  (Web Routes)
+│   ├── /storage
+│   ├── /tests
+│   ├── .env
+│   ├── composer.json
+│   ├── package.json
+│   ├── artisan
+│
+│── /frontend (Vite React Frontend)
+│   ├── /public
+│   │   ├── 
+│   ├── /src
+│   │   ├── /assets
+│   │   │   ├── logo.png
+│   │   ├── /components
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── LogoutButton.jsx
+│   │   │   ├── DeleteImageButton.jsx
+│   │   │   ├── ShareImageButtons.jsx
+│   │   │   ├── DownloadImageButtons.jsx
+│   │   ├── /pages
+│   │   │   ├── /admin
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   ├── UploadImage.jsx
+│   │   │   │   ├── UpdateImage.jsx
+│   │   │   │   ├── ListAllImages.jsx
+│   │   │   │   ├── Analytics.jsx
+│   │   │   │   ├── AdminRegister.jsx (Registeration require OKAY from the super Admin e.g. Shamoon)
+│   │   │   │   ├── AdminLogin.jsx (Registeration require OKAY from the super Admin e.g. Shamoon)
+│   │   │   ├── /public
+│   │   │   │   ├── Home.jsx
+│   │   │   │   ├── Images.jsx
+│   │   │   │   ├── {Image}.jsx
+│   │   │   │   ├── AllahNames.jsx
+│   │   │   │   ├── About.jsx
+│   │   ├── /context
+│   │   │   ├── AuthContext.jsx
+│   │   ├── App.jsx (use react-router-dom and define routes here)
+│   │   ├── main.jsx
+│   ├── index.html
+│   ├── .env
+│   ├── .gitignore
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── README.md
+│
+│── .gitignore
+│── README.md
+```
 
 
 ## api.php
