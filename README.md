@@ -2,7 +2,7 @@
 
 This platform allows users to share, download, and embed Islamic images/posters in SVG format. Content can be easily shared on WhatsApp and used in websites or apps by other user after downloading
 
-## Core Features (Phase 1 - Image Sharing)
+## Features
 
 ### 1. Islamic Media Library
 - Collection of Islamic Posters, Quotes, Duas, Reminders, images of Famous Mosques
