@@ -139,7 +139,7 @@ CREATE TABLE shares (
 
 ## Directory
 ```
-/project-root
+/islamic-media-website    
 │── /backend (Laravel Backend)
 │   ├── /app
 │   │   ├── /Console
@@ -212,7 +212,6 @@ CREATE TABLE shares (
 │   │   ├── App.jsx (use react-router-dom and define routes here)
 │   │   ├── main.jsx
 │   ├── index.html
-│   ├── .env
 │   ├── .gitignore
 │   ├── package.json
 │   ├── vite.config.js
