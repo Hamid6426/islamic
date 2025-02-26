@@ -31,50 +31,45 @@ This platform allows users to share, download, and embed Islamic images/posters 
 
 ## FRONTEND PAGES
 
-Home Page (Landing Page)
-- Show featured images (Ramadan, Hadith, Trending)
-- Search bar to find images
-- Category filters (Ramadan, Hadith, Aqwal, etc.)
-- Trending & Latest images section
+### Home Page (Landing Page)
+- Show featured images
 - Simple Islamic-themed UI
-
 ```
 Route: /
 ```
 
-Image Detail Page
+### Image Detail Page
 - Shows the full image preview
 - WhatsApp Share Button (One-click sharing)
 - Download Button (Save image to device)
 - Embed Code (For websites/apps)
 - Related images (suggest similar Islamic content)
-
 ```
 Route: /image/{slug} (e.g., /image/beautiful-islamic-quote)
 ```
 
-Phase 2 – Additional Islamic Features (Future)
-5️Allah’s Names Page
+### Allah’s Names Page
 - Interactive 99 Names of Allah
 - Audio Play Button for pronunciation
 - Meanings & Explanations
-
 ```
 Route: /allah-names
 ```
 
-About Us Page
+### About Us Page
 - Short introduction to the website’s purpose
 - Contact & feedback form
 ```
 Route: /about
 ```
-Admin Panel (Only for Admins)
+
+### Admin Panel (Only for Admins)
 - Upload New Images
 - View Download & Share Stats
 ```
 Route: /admin (Protected)
 ```
+
 ## TABLES
 
 ### Admin Table
