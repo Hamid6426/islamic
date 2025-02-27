@@ -137,7 +137,7 @@ CREATE TABLE shares (
 | POST   | /api/images/{id}/download   | Increase download count         | id (Image ID) |
 | POST   | /api/images/{id}/view       | Increase view count             | id (Image ID) |
 
-## Directory
+## Directory (Laravel + React)
 ```
 /islamic-media-website    
 │── /backend (Laravel Backend)
@@ -146,22 +146,25 @@ CREATE TABLE shares (
 │   │   ├── /Exceptions
 │   │   ├── /Http
 │   │   │   ├── /Controllers
-│   │   │   │   ├── ApiController.php
 │   │   │   │   ├── AuthController.php
-│   │   │   │   ├── ImageController.php
 │   │   │   │   ├── AdminController.php
+│   │   │   │   ├── ImageController.php
+│   │   │   │   ├── ShareController.php
+│   │   │   │   ├── ApiController.php
 │   │   │   ├── /Middleware
 │   │   │   │   ├── Authenticate.php
 │   │   │   │   ├── Cors.php
 │   │   ├── /Models
-│   │   │   ├── User.php
-│   │   │   ├── Image.php
 │   │   │   ├── Admin.php
+│   │   │   ├── Image.php
+│   │   │   ├── Share.php
 │   │   ├── /Providers
 │   ├── /bootstrap
 │   ├── /config
 │   ├── /database
+│   │   ├── seeders.php
 │   │   ├── /factories
+│   │   │   ├── ImageFactory.php
 │   │   ├── /migrations
 │   │   │   ├── 2024_xx_xx_create_users_table.php
 │   │   │   ├── 2024_xx_xx_create_images_table.php
@@ -220,6 +223,37 @@ CREATE TABLE shares (
 │── .gitignore
 │── README.md
 ```
+
+## Directory (MERN)
+```
+/islamic-media-website    
+│── /backend (Express.js Backend)
+│   ├── /src
+│   │   ├── /config
+│   │   │   ├── db.js (Database connection)
+│   │   ├── /controllers
+│   │   │   ├── authController.js
+│   │   │   ├── imageController.js
+│   │   │   ├── adminController.js
+│   │   ├── /middlewares
+│   │   │   ├── authMiddleware.js (JWT Authentication)
+│   │   │   ├── corsMiddleware.js
+│   │   ├── /models
+│   │   │   ├── User.js
+│   │   │   ├── Image.js
+│   │   │   ├── Admin.js
+│   │   ├── /routes
+│   │   │   ├── authRoutes.js
+│   │   │   ├── imageRoutes.js
+│   │   │   ├── adminRoutes.js
+│   │   ├── /utils
+│   │   │   ├── generateToken.js
+│   │   ├── server.js
+│   ├── .env
+│   ├── package.json
+│   ├── README.md
+│
+│── /frontend (Vite + React) **(Unchanged)**
 
 
 ## api.php
