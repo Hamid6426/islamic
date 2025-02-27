@@ -311,6 +311,7 @@ module.exports = Share;
 │   │   ├── /middlewares
 │   │   │   ├── authMiddleware.js (JWT Authentication)
 │   │   │   ├── corsMiddleware.js
+│   │   │   ├── errorMiddleware.js
 │   │   ├── /models
 │   │   │   ├── Admin.js
 │   │   │   ├── Image.js
