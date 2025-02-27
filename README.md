@@ -112,6 +112,65 @@ CREATE TABLE shares (
 );
 ```
 
+## Mongoose Schemas
+
+### Admin Schema
+```
+const mongoose = require("mongoose");
+
+const adminSchema = new mongoose.Schema(
+    {
+        name: { type: String, required: true },
+        email: { type: String, unique: true, required: true },
+        password: { type: String, required: true }
+    },
+    { timestamps: true } // Automatically adds createdAt and updatedAt
+);
+
+const Admin = mongoose.model("Admin", adminSchema);
+module.exports = Admin;
+```
+
+### Image Schema
+```
+const mongoose = require("mongoose");
+
+const imageSchema = new mongoose.Schema(
+    {
+        title: { type: String, required: true },
+        slug: { type: String, unique: true, required: true }, // SEO-friendly URL slug
+        description: { type: String },
+        svgContent: { type: String, required: true }, // Storing SVG as a string
+        adminId: { type: mongoose.Schema.Types.ObjectId, ref: "Admin", required: true },
+        views: { type: Number, default: 0 },
+        downloads: { type: Number, default: 0 }
+    },
+    { timestamps: true } // Automatically adds createdAt and updatedAt
+);
+
+const Image = mongoose.model("Image", imageSchema);
+module.exports = Image;
+```
+
+### Share Schema
+```
+const mongoose = require("mongoose");
+
+const shareSchema = new mongoose.Schema(
+    {
+        imageId: { type: mongoose.Schema.Types.ObjectId, ref: "Image", required: true },
+        shareCount: { type: Number, default: 0 }
+    },
+    { timestamps: true } // Automatically adds createdAt and updatedAt
+);
+
+// Index for optimizing queries
+shareSchema.index({ imageId: 1 });
+
+const Share = mongoose.model("Share", shareSchema);
+module.exports = Share;
+```
+
 ## API ROUTES
 
 ### Admin Routes
@@ -232,16 +291,30 @@ CREATE TABLE shares (
 │   │   ├── /config
 │   │   │   ├── db.js (Database connection)
 │   │   ├── /controllers
-│   │   │   ├── authController.js
-│   │   │   ├── imageController.js
-│   │   │   ├── adminController.js
+│   │   │   ├── /admin (These are the author, simply say)
+│   │   │   │   ├── registerAdmin.js
+│   │   │   │   ├── loginAdmin.js
+│   │   │   │   ├── logoutAdmin.js
+│   │   │   │   ├── getAdminById.js
+│   │   │   │   ├── getAllAdmins.js
+│   │   │   │   ├── approveAdmin.js (For super admin to approve registrations)
+│   │   │   ├── /image
+│   │   │   │   ├── uploadImage.js
+│   │   │   │   ├── updateImage.js
+│   │   │   │   ├── deleteImage.js
+│   │   │   │   ├── getAllImages.js
+│   │   │   │   ├── getImageById.js
+│   │   │   │   ├── getImageBySlug.js
+│   │   │   ├── /share
+│   │   │   │   ├── shareImage.js (Increase with number of share)
+│   │   │   │   ├── getShares.js (Get share count per image)
 │   │   ├── /middlewares
 │   │   │   ├── authMiddleware.js (JWT Authentication)
 │   │   │   ├── corsMiddleware.js
 │   │   ├── /models
-│   │   │   ├── User.js
-│   │   │   ├── Image.js
 │   │   │   ├── Admin.js
+│   │   │   ├── Image.js
+│   │   │   ├── Share.js
 │   │   ├── /routes
 │   │   │   ├── authRoutes.js
 │   │   │   ├── imageRoutes.js
@@ -253,8 +326,48 @@ CREATE TABLE shares (
 │   ├── package.json
 │   ├── README.md
 │
-│── /frontend (Vite + React) **(Unchanged)**
-
+│── /frontend (Vite React Frontend)
+│   ├── /public
+│   │   ├── 
+│   ├── /src
+│   │   ├── /assets
+│   │   │   ├── logo.png
+│   │   ├── /components
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── LogoutButton.jsx
+│   │   │   ├── DeleteImageButton.jsx
+│   │   │   ├── ShareImageButtons.jsx
+│   │   │   ├── DownloadImageButtons.jsx
+│   │   ├── /pages
+│   │   │   ├── /admin
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   ├── UploadImage.jsx
+│   │   │   │   ├── UpdateImage.jsx
+│   │   │   │   ├── ListAllImages.jsx
+│   │   │   │   ├── Analytics.jsx
+│   │   │   │   ├── AdminRegister.jsx (Registeration require OKAY from the super Admin e.g. Shamoon)
+│   │   │   │   ├── AdminLogin.jsx (Registeration require OKAY from the super Admin e.g. Shamoon)
+│   │   │   │   ├── ApproveAdmins.jsx (contact number of shamoon to inform him)
+│   │   │   ├── /public
+│   │   │   │   ├── Home.jsx
+│   │   │   │   ├── Images.jsx
+│   │   │   │   ├── SingleImage.jsx
+│   │   │   │   ├── AllahNames.jsx
+│   │   │   │   ├── About.jsx
+│   │   ├── /context
+│   │   │   ├── AuthContext.jsx
+│   │   ├── App.jsx (use react-router-dom and define routes here)
+│   │   ├── main.jsx
+│   ├── index.html
+│   ├── .gitignore
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── README.md
+│
+│── .gitignore
+│── README.md
+```
 
 ## api.php
 
