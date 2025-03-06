@@ -46,7 +46,7 @@ const Login = () => {
 
   return (
     <div className="background flex justify-center items-center min-h-screen">
-      <div className="w-full flex flex-col gap-4 max-w-sm p-6 border-2 border-orange-400 h-fit rounded-sm shadow-md">
+      <div className="bg-white w-full flex flex-col gap-4 max-w-sm p-6 border-2 border-orange-400 h-fit rounded-sm shadow-md">
         <h2 className="text-2xl font-bold text-center">Account Login</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
@@ -80,7 +80,7 @@ const Login = () => {
            className="font-bold hover:text-orange-400 cursor-pointer"
            >
           
-            Login
+            Register
           </a>
         </div>
       </div>

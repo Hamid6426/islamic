@@ -3,16 +3,16 @@ import AdminLogoutButton from "./AdminLogout";
 
 const menuItems = [
   { name: "Dashboard Overview", icon: <FaTachometerAlt />, path: "/admin/dashboard" },
-  { name: "User Management", icon: <FaUsers />, path: "/admin/users" },
-  { name: "Admin Management", icon: <FaUserShield />, path: "/admin/admins" },
-  { name: "Image Management", icon: <FaImage />, path: "/admin/images" },
+  { name: "User Management", icon: <FaUsers />, path: "/admin/manage-users" },
+  { name: "Admin Management", icon: <FaUserShield />, path: "/admin/manage-admins" },
+  { name: "Image Management", icon: <FaImage />, path: "/admin/manage-images" },
   { name: "Analytics & Reports", icon: <FaChartBar />, path: "/admin/analytics" },
-  { name: "Settings", icon: <FaCogs />, path: "/admin/settings" },
+  { name: "Settings", icon: <FaCogs />, path: "/admin/manage-settings" },
 ];
 
 const AdminSidebar = () => {
   return (
-    <div className="h-screen w-64 bg-gray-900 text-white flex flex-col">
+    <div className="fixed h-screen w-64 bg-gray-900 text-white flex flex-col">
       {/* Logo */}
       <div className="p-5 text-xl font-bold border-b border-gray-700">Admin Dashboard</div>
 

@@ -7,14 +7,30 @@ const searchImages = async (req, res) => {
       return res.status(400).json({ error: "Search query is required" });
     }
 
+    // const images = await Image.find({
+    //   $text: { $search: query } // Searches in title, description, and tags
+    // })
+    //   .skip((page - 1) * limit)
+    //   .limit(Number(limit));
+
     const images = await Image.find({
       $or: [
-        { title: { $regex: query, $options: "i" } }, // Case-insensitive search in title
-        { tags: { $regex: query, $options: "i" } }  // Case-insensitive search in tags
+        { $text: { $search: query } }, // Text search (title, description, tags)
+        { category: { $regex: query, $options: "i" } } // Case-insensitive category search
       ]
     })
       .skip((page - 1) * limit)
       .limit(Number(limit));
+
+      
+    // const images = await Image.find({
+    //   $or: [
+    //     { title: { $regex: query, $options: "i" } }, // Case-insensitive search in title
+    //     { tags: { $regex: query, $options: "i" } }  // Case-insensitive search in tags
+    //   ]
+    // })
+    //   .skip((page - 1) * limit)
+    //   .limit(Number(limit));
 
     res.status(200).json(images);
   } catch (err) {

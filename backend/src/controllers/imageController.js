@@ -1,5 +1,8 @@
 const Image = require("../models/Image");
 const cloudinary = require("cloudinary").v2;
+const path = require("path");
+const fs = require("fs");
+const axios = require("axios");
 
 // Configure Cloudinary
 cloudinary.config({
@@ -80,7 +83,7 @@ const getAllImages = async (req, res) => {
 
 const getImageById = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
     const image = await Image.findById(id);
     if (!image) return res.status(404).json({ error: "Image not found" });
     res.status(200).json(image);
@@ -117,15 +120,36 @@ const deleteImage = async (req, res) => {
   }
 };
 
+// const getImageBySlug = async (req, res) => {
+//   try {
+//     const image = await Image.findOne({ slug: req.params.slug }); // from URL
+//     if (!image) return res.status(404).json({ error: "Image not found" });
+//     res.status(200).json(image);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
 const getImageBySlug = async (req, res) => {
   try {
-    const image = await Image.findOne({ slug: req.params.slug }); // from URL
+    const image = await Image.findOne({ slug: req.params.slug });
     if (!image) return res.status(404).json({ error: "Image not found" });
-    res.status(200).json(image);
+
+    const pngUrl = image.image;
+    const svgUrl = pngUrl.replace("/upload/", "/upload/f_svg/");
+
+    res.status(200).json({
+      image: pngUrl,
+      svg: svgUrl,
+      title: image.title,
+      description: image.description,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+
 
 const updateImageBySlug = async (req, res) => {
   try {
@@ -249,13 +273,66 @@ const unlikeImageBySlug = async (req, res) => {
 };
 
 const getImagesByCategory = async (req, res) => {
+  const { category } = req.params;
+
   try {
-    const images = await Image.find({ category: req.params.category });
-    res.status(200).json(images);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const images = await Image.find({ category });
+    res.status(200).json({
+      success: true,
+      data: images,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Server Error",
+    });
   }
 };
+
+const downloadImage = async (req, res) => {
+  try {
+    // Authentication Check
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized. Please log in." });
+    }
+
+    const { slug } = req.params;
+
+    // Find Image by Slug
+    const image = await Image.findOne({ slug });
+    if (!image) {
+      return res.status(404).json({ error: "Image not found." });
+    }
+
+    // Fetch the Image from the External URL
+    const response = await axios.get(image.image, {
+      responseType: "arraybuffer",
+      timeout: 10000, // Timeout after 10 seconds
+    });
+
+    // Dynamically Determine MIME Type and Extension
+    const mimeType = response.headers["content-type"];
+    const extension = mimeType.split("/")[1];
+
+    // Set Headers for Download
+    res.setHeader("Content-Type", mimeType);
+    res.setHeader("Content-Disposition", `attachment; filename="${image.title || "downloaded-image"}.${extension}"`);
+
+    // Send Image Data to the Client
+    res.send(Buffer.from(response.data, "binary"));
+  } catch (error) {
+    console.error(`Error downloading image [Slug: ${req.params.slug}]:`, error.message);
+
+    // Handle External Image Fetch Errors
+    if (error.response) {
+      return res.status(500).json({ error: `Failed to fetch image from source: ${error.response.statusText}` });
+    }
+
+    // Generic Server Error Response
+    res.status(500).json({ error: "Failed to download image." });
+  }
+};
+
 
 module.exports = {
   uploadImage,
@@ -275,4 +352,5 @@ module.exports = {
   unlikeImage,
   unlikeImageBySlug,
   getImagesByCategory,
+  downloadImage,
 };

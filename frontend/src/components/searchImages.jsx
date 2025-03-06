@@ -21,6 +21,7 @@ const SearchImages = () => {
             placeholder="Search images..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Detects Enter key
           />
         </div>
 

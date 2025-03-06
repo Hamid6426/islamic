@@ -41,7 +41,7 @@ const Register = () => {
 
   return (
     <div className="background flex justify-center items-center min-h-screen">
-      <div className="w-full flex flex-col gap-4 max-w-sm p-6 border-2 border-orange-400 h-fit rounded-sm shadow-md">
+      <div className="bg-white  w-full flex flex-col gap-4 max-w-sm p-6 border-2 border-orange-400 h-fit rounded-sm shadow-md">
         <h2 className="text-2xl font-bold text-center">Register an Account</h2>
         <form
           onSubmit={handleSubmit}
@@ -85,12 +85,12 @@ const Register = () => {
           )}
         </form>
         <div className="text-center">
-          Don't have an Account?{" "}
+          Already have an Account?{" "}
           <a
             href="/login"
             className="font-bold hover:text-orange-400 cursor-pointer"
           >
-            Register
+            Login
           </a>
         </div>
       </div>

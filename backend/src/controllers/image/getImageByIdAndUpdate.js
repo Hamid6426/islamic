@@ -12,7 +12,7 @@ const generateSlug = (title) => {
   return title.toLowerCase().replace(/\s+/g, "-");
 };
 
-const updateImage = async (req, res) => {
+const getImageByIdAndUpdate = async (req, res) => {
   try {
     console.log("Received image update request.");
 
@@ -26,18 +26,27 @@ const updateImage = async (req, res) => {
       return res.status(404).json({ success: false, error: "Image not found." });
     }
 
-    let updatedImageUrl = existingImage.image; // Keep the existing image URL by default
+    let updatedImageUrl = existingImage.image; // Keep existing image
 
     // Check if a new file is uploaded
     if (req.file) {
       console.log("Uploading new image to Cloudinary...");
+      
+      // Delete old image from Cloudinary
+      if (existingImage.image) {
+        const publicId = existingImage.image.split("/").pop().split(".")[0]; // Extract Cloudinary public ID
+        await cloudinary.uploader.destroy(publicId);
+        console.log("Old image deleted from Cloudinary.");
+      }
+
+      // Upload new image
       const result = await cloudinary.uploader.upload(req.file.path);
       updatedImageUrl = result.secure_url;
       console.log("New image uploaded successfully:", updatedImageUrl);
     }
 
     const updatedSlug = title ? generateSlug(title) : existingImage.slug;
-    const updatedTags = tags ? JSON.parse(tags) : existingImage.tags;
+    const updatedTags = Array.isArray(tags) ? tags : tags ? JSON.parse(tags) : existingImage.tags;
 
     // Update image fields
     existingImage.title = title || existingImage.title;
@@ -51,11 +60,11 @@ const updateImage = async (req, res) => {
     await existingImage.save();
     console.log("Image updated successfully:", existingImage);
 
-    res.status(200).json({ success: true, data: existingImage });
+    res.status(200).json({ success: true, data: existingImage }); // Ensure frontend gets the full data
   } catch (error) {
     console.error("Error in updateImage:", error.message);
     res.status(500).json({ success: false, error: "Server Error: " + error.message });
   }
 };
 
-module.exports = updateImage;
+module.exports = getImageByIdAndUpdate;

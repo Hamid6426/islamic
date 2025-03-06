@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const {
   uploadImage,
   getAllImages,
@@ -16,37 +17,41 @@ const {
   unlikeImage,
   unlikeImageBySlug,
   getImagesByCategory,
+  downloadImage,
 } = require("../controllers/imageController");
-const multer = require("multer");
-const adminMiddleware = require("../middlewares/adminMiddleware");
 
-const updateImage = require("../controllers/image/updateImage");
+const updateImage = require("../controllers/image/getImageByIdAndUpdate");
 const searchImages = require("../controllers/image/searchImages");
+const getImageByIdAndUpdate = require("../controllers/image/getImageByIdAndUpdate");
+const authMiddleware = require("../middlewares/authMiddleware"); // Using role-based auth
 
 const imageRouter = express.Router();
 const upload = multer({ dest: "uploads/" });
 
-// Routes
-imageRouter.post("/upload", upload.single("file"), adminMiddleware, uploadImage);
-imageRouter.put("/update/:slug", upload.single("file"), adminMiddleware, updateImage);
+// **Admin Routes (Requires Admin or Super Admin)**
+imageRouter.post("/upload", upload.single("file"), authMiddleware(["admin", "super-admin"]), uploadImage);
+imageRouter.put("/update/:slug", upload.single("file"), authMiddleware(["admin", "super-admin"]), updateImage);
+imageRouter.put("/update/:id", upload.single("file"), authMiddleware(["admin", "super-admin"]), getImageByIdAndUpdate);
 
-imageRouter.put("/slug/:slug", adminMiddleware, updateImageBySlug);
-imageRouter.delete("/id/:id", adminMiddleware, deleteImage);
-imageRouter.delete("/slug/:slug", adminMiddleware, deleteImageBySlug);
+imageRouter.put("/slug/:slug", authMiddleware(["admin", "super-admin"]), updateImageBySlug);
+imageRouter.delete("/id/:id", authMiddleware(["admin", "super-admin"]), deleteImage);
+imageRouter.delete("/slug/:slug", authMiddleware(["admin", "super-admin"]), deleteImageBySlug);
 
+// **Public Routes (No authentication required)**
 imageRouter.get("/get-all", getAllImages);
 imageRouter.get("/id/:id", getImageById);
 imageRouter.get("/slug/:slug", getImageBySlug);
 
-imageRouter.post("/search-by-tag", searchImagesByTags);
+// **Authenticated User Routes (Requires Login)**
 imageRouter.get("/search", searchImages);
-imageRouter.patch("/:id/like", likeImage);
-imageRouter.patch("/:id/unlike", unlikeImage);
+imageRouter.patch("/:id/like", authMiddleware(["user", "admin", "super-admin"]), likeImage);
+imageRouter.patch("/:id/unlike", authMiddleware(["user", "admin", "super-admin"]), unlikeImage);
 imageRouter.patch("/slug/:slug/views", incrementViews);
 imageRouter.patch("/slug/:slug/downloads", incrementDownloads);
 imageRouter.patch("/slug/:slug/shares", incrementShares);
-imageRouter.patch("/slug/:slug/like", likeImageBySlug);
-imageRouter.patch("/slug/:slug/unlike", unlikeImageBySlug);
+imageRouter.patch("/slug/:slug/like", authMiddleware(["user", "admin", "super-admin"]), likeImageBySlug);
+imageRouter.patch("/slug/:slug/unlike", authMiddleware(["user", "admin", "super-admin"]), unlikeImageBySlug);
 imageRouter.get("/category/:category", getImagesByCategory);
+imageRouter.get("/download/:slug", authMiddleware(["user", "admin", "super-admin"]), downloadImage);
 
 module.exports = imageRouter;

@@ -3,9 +3,9 @@ import AdminSidebar from "../AdminSidebar";
 
 const AdminLayout = () => {
   return (
-    <div>
+    <div className="flex justify-between items-start">
       <AdminSidebar />
-      <main>
+      <main className="ml-64">
         <Outlet />
       </main>
     </div>

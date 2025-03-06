@@ -1,5 +1,5 @@
 const express = require("express");
-const adminMiddleware = require("../middlewares/adminMiddleware");
+const authMiddleware = require("../middlewares/authMiddleware");
 const registerAdmin = require("../controllers/admin/registerAdmin");
 const loginAdmin = require("../controllers/admin/loginAdmin");
 const logoutAdmin = require("../controllers/admin/logoutAdmin");
@@ -11,9 +11,9 @@ const adminRouter = express.Router();
 
 adminRouter.post("/register", registerAdmin);
 adminRouter.post("/login", loginAdmin);
-adminRouter.post("/logout", adminMiddleware, logoutAdmin);
-adminRouter.get("/", adminMiddleware, getAllAdmins);
-adminRouter.get("/id/:id", adminMiddleware, getAdminById);
-adminRouter.get("/verify-admin-token", adminMiddleware, verifyAdminToken);
+adminRouter.post("/logout", authMiddleware(["admin", "super-admin", "moderator", "editor" ]), logoutAdmin);
+adminRouter.get("/id/:id", authMiddleware(["admin", "super-admin", "moderator", "editor" ]), getAdminById);
+adminRouter.get("/verify-admin-token", authMiddleware(["admin", "super-admin", "moderator", "editor" ]), verifyAdminToken);
+adminRouter.get("/", authMiddleware(["super-admin", "admin" ]), getAllAdmins);
 
 module.exports = adminRouter;

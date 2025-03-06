@@ -20,18 +20,22 @@ const ImageUpload = () => {
     }
 
     const formattedTags = tags
-      .split(",") // Split by comma
-      .map((tag) => tag.trim()) // Trim spaces
-      .filter((tag) => tag !== ""); // Remove empty tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== "");
 
     console.log("Formatted Tags:", formattedTags);
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("tags", JSON.stringify(formattedTags)); // Convert to JSON string
+    formData.append("tags", JSON.stringify(formattedTags));
     formData.append("category", category);
     formData.append("file", image);
+    formData.append("likes", JSON.stringify([]));
+    formData.append("shares", 0);
+    formData.append("views", 0);
+    formData.append("downloads", 0);
 
     console.log("Form Data prepared:", {
       title,
@@ -39,6 +43,10 @@ const ImageUpload = () => {
       tags: formattedTags,
       category,
       file: image.name,
+      likes: [],
+      shares: 0,
+      views: 0,
+      downloads: 0,
     });
 
     try {
@@ -65,68 +73,74 @@ const ImageUpload = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-6">Upload Image</h2>
+    <div className="max-w-md mx-auto pl-4">
+      <h2 className="text-2xl font-bold my-4">Upload Image</h2>
       <form
         onSubmit={handleImageUpload}
-        className="bg-white p-6 rounded-lg shadow-md"
+        className="bg-white rounded-lg shadow-md"
       >
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+        <div className="mb-3">
+          <label className="block text-gray-700 text-sm font-bold mb-1">
             Title
           </label>
           <input
             type="text"
-            className="w-full px-3 py-2 border rounded-lg"
+            className="w-full px-3 py-1 border rounded"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+        <div className="mb-3">
+          <label className="block text-gray-700 text-sm font-bold mb-1">
             Description
           </label>
           <textarea
-            className="w-full px-3 py-2 border rounded-lg"
+            className="w-full px-3 py-1 border rounded"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+        <div className="mb-3">
+          <label className="block text-gray-700 text-sm font-bold mb-1">
             Tags
           </label>
           <input
             type="text"
-            className="w-full px-3 py-2 border rounded-lg"
+            className="w-full px-3 py-1 border rounded"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+        <div className="mb-3">
+          <label className="block text-gray-700 text-sm font-bold mb-1">
             Category
           </label>
           <input
             type="text"
-            className="w-full px-3 py-2 border rounded-lg"
+            className="w-full px-3 py-1 border rounded"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+        <div className="mb-3">
+          <label className="block text-gray-700 text-sm font-bold mb-1">
             Image
           </label>
           <input
             type="file"
-            className="w-full px-3 py-2 border rounded-lg"
+            className="w-full px-3 py-1 border rounded"
             onChange={(e) => {
               setImage(e.target.files[0]);
               console.log("Selected file:", e.target.files[0]?.name || "None");
             }}
           />
         </div>
+        {/* Hidden Fields for Backend */}
+        <input type="hidden" name="likes" value="[]" />
+        <input type="hidden" name="shares" value="0" />
+        <input type="hidden" name="views" value="0" />
+        <input type="hidden" name="downloads" value="0" />
+        
         <button
           type="submit"
           className="w-full bg-blue-500 text-white px-3 py-2 rounded-lg"
