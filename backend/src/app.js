@@ -1,24 +1,32 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
-const adminRoutes = require("./routes/adminRoutes");
-const imageRoutes = require("./routes/imageRoutes");
-const shareRoutes = require("./routes/shareRoutes");
-const verifyAdmin = require("./controllers/admin/verifyAdmin");
+const cors = require("cors");
 const db = require("./config/db");
+const verifyAdmin = require("./controllers/admin/verifyAdmin");
+const adminRouter = require("./routes/adminRouter");
+const imageRouter = require("./routes/imageRouter");
+const userRouter = require("./routes/userRoutes");
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
 
-// Connect to database (Ensure this doesn't crash the server)
+// Connect to database
 db().catch((err) => {
   console.error("Database connection failed:", err);
-  process.exit(1); // Exit the app if DB connection fails
+  process.exit(1);
 });
 
+const frontendURL = process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : "http://localhost:5173";
+
 // Middleware
+app.use(cors({ 
+  origin: frontendURL, 
+  credentials: true 
+}));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -29,9 +37,8 @@ app.get("/", (_req, res) => {
 });
 
 app.get("/verify-admin", verifyAdmin);
-
-app.use("/api/admins", adminRoutes);
-app.use("/api/images", imageRoutes);
-app.use("/api/shares", shareRoutes);
+app.use("/api/admins", adminRouter);
+app.use("/api/users", userRouter);
+app.use("/api/images", imageRouter);
 
 module.exports = app;

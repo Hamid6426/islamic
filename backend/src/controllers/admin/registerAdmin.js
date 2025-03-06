@@ -18,20 +18,24 @@ const registerAdmin = async (req, res) => {
       return res.status(400).json({ message: "Email already exists." });
     }
 
-    const verificationToken = crypto.randomBytes(32).toString("hex");
-
-    const newAdmin = new Admin({
-      name,
-      email,
-      password,
-      role,
-      isVerified: false,
-      verificationToken
-    });
+     // Hash the password before storing
+     const saltRounds = 10;
+     const hashedPassword = await bcrypt.hash(password, saltRounds);
+ 
+     const verificationToken = crypto.randomBytes(32).toString("hex");
+ 
+     const newAdmin = new Admin({
+       name,
+       email,
+       password: hashedPassword,  // Store hashed password
+       role,
+       isVerified: false,
+       verificationToken,
+     });
 
     await newAdmin.save();
 
-    await sendVerificationEmailToCompany(newAdmin);
+    await sendVerificationEmail(newAdmin);
 
     res.status(201).json({
       message: "Admin registered successfully. Awaiting verification.",
@@ -41,7 +45,7 @@ const registerAdmin = async (req, res) => {
   }
 };
 
-const sendVerificationEmailToCompany = async (admin) => {
+const sendVerificationEmail = async (admin) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {

@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies.userToken;
   if (!token) {
     return res.status(403).json({ message: "No token provided" });
   }
@@ -10,7 +10,7 @@ const authMiddleware = (req, res, next) => {
     if (err) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    req.admin = decoded; // Attach admin details to request object
+    req.user = decoded; // Attach user details to request object
     next();
   });
 };

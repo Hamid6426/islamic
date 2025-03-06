@@ -2,7 +2,7 @@
 
 const logoutAdmin = async (req, res) => {
   try {
-    res.cookie("token", "", {
+    res.cookie("adminToken", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",

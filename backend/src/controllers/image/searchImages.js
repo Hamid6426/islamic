@@ -2,27 +2,24 @@ const Image = require("../../models/Image");
 
 const searchImages = async (req, res) => {
   try {
-    const { search, sort, page = 1, limit = 10 } = req.query;
-    const skip = (page - 1) * limit;
-
-    let query = {};
-    if (search) {
-      query.title = { $regex: search, $options: "i" }; // Case-insensitive search
+    const { query, page = 1, limit = 12 } = req.query; // Extract query term, page, and limit from query string
+    if (!query) {
+      return res.status(400).json({ error: "Search query is required" });
     }
 
-    let sortQuery = { createdAt: -1 }; // Default: newest first
-    if (sort === "views") {
-      sortQuery = { views: -1 };
-    } else if (sort === "downloads") {
-      sortQuery = { downloads: -1 };
-    }
+    const images = await Image.find({
+      $or: [
+        { title: { $regex: query, $options: "i" } }, // Case-insensitive search in title
+        { tags: { $regex: query, $options: "i" } }  // Case-insensitive search in tags
+      ]
+    })
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
 
-    const images = await Image.find(query).skip(skip).limit(Number(limit)).sort(sortQuery);
-    const total = await Image.countDocuments(query);
-
-    res.status(200).json({ total, page: Number(page), limit: Number(limit), images });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(200).json(images);
+  } catch (err) {
+    console.error("Error in searchImages controller:", err);
+    res.status(500).json({ error: "An error occurred while searching" });
   }
 };
 
