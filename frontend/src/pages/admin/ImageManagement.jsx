@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import DeleteImage from "../../components/DeleteImage";
+import axiosInstance from "../../utils/axiosConfig";
 
 export default function ImageManagement() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const API_ROUTE = "http://localhost:3000/api/images/get-all"; // Adjust API route if needed
 
   // Fetch images from server
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get(API_ROUTE);
+        const response = await axiosInstance.get("/api/images/get-all");
         setImages(response.data);
       } catch (error) {
         console.error("Error fetching images:", error);

@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../utils/axiosConfig";
 
 const AdminProtectedRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -8,7 +8,7 @@ const AdminProtectedRoute = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await axios.get("http://localhost:3000/api/admins/verify-admin-token", {
+        await axiosInstance.get("/api/admins/verify-admin-token", {
           withCredentials: true, // Ensures cookies are sent
         });
         setIsAuthenticated(true);

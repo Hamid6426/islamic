@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
+import axiosInstance from "../../utils/axiosConfig";
 
 const ImagePreview = () => {
   const { slug } = useParams();
@@ -12,13 +12,11 @@ const ImagePreview = () => {
   const [error, setError] = useState(null);
   const [downloading, setDownloading] = useState(false);
 
-  const API_ROUTE = `http://localhost:3000/api/images/slug/${slug}`;
-
   // Fetch Image Details
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const response = await axios.get(API_ROUTE);
+        const response = await axiosInstance.get(`/api/images/slug/${slug}`);
         setImage(response.data);
       } catch (error) {
         setError("Failed to load image details.");

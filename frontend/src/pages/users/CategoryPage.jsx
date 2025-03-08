@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Navbar from "../../components/Navbar";
+import axiosInstance from "../../utils/axiosConfig";
 
 export default function CategoryPage() {
   const { category } = useParams(); // Get category from URL
@@ -9,15 +9,13 @@ export default function CategoryPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const API_ROUTE = `http://localhost:3000/api/images/category/${category}`;
-
   useEffect(() => {
     const fetchImages = async () => {
       setLoading(true);
       setError("");
 
       try {
-        const response = await axios.get(API_ROUTE);
+        const response = await axiosInstance.get(`/api/images/category/${category}`);
 
         if (response.data.data.length === 0) {
           setError(`No images found for category: "${category}"`);

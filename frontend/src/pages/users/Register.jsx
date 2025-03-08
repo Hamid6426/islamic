@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosConfig";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -26,8 +26,8 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/users/register",
+      const response = await axiosInstance.post(
+        "/api/users/register",
         formData
       );
       setMessage(response.data.message);

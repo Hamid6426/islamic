@@ -1,12 +1,12 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axiosConfig";
 
 const AdminLogoutButton = () => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
-            await axios.post("http://localhost:3000/api/admins/logout", {}, { withCredentials: true });
+            await axiosInstance.get("/api/admins/logout", {}, { withCredentials: true });
             navigate("/signin");
         } catch (error) {
             console.error("Logout failed", error);

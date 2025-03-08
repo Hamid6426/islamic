@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosConfig";
 
 const ImageUpdatePage = () => {
   const { _id } = useParams(); // Get _id from URL
@@ -14,7 +14,7 @@ const ImageUpdatePage = () => {
   useEffect(() => {
     const fetchImageData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/images/id/${_id}`);
+        const response = await axiosInstance.get(`/api/images/id/${_id}`);
         const data = response.data; // Instead of response.data.data
         setTitle(data.title);
         setDescription(data.description);
@@ -41,7 +41,7 @@ const ImageUpdatePage = () => {
     if (image) formData.append("file", image);
 
     try {
-      await axios.put(`http://localhost:3000/api/images/update/${_id}`, formData, {
+      await axiosInstance.put(`/api/images/update/${_id}`, formData, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });

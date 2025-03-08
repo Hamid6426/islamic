@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosConfig";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -24,9 +24,8 @@ const AdminLogin = () => {
     }
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
-      const response = await axios.post(
-        `${API_URL}/api/admins/login`,
+      const response = await axiosInstance.post(
+        "/api/admins/login",
         formData,
         { withCredentials: true } // Important to send cookies with requests
       );

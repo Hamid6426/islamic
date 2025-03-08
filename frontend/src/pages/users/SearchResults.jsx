@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import axios from "axios";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
+import axiosInstance from "../../utils/axiosConfig";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
@@ -19,7 +19,7 @@ const SearchResults = () => {
   const fetchImages = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get("http://localhost:3000/api/images/search", {
+      const response = await axiosInstance.get("/api/images/search", {
         params: { query, page: 1, limit: 12 },
       });
       setImages(response.data);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosConfig";
 
 const ImagesByCategory = () => {
   const { category } = useParams(); // Get category from URL
@@ -8,8 +8,6 @@ const ImagesByCategory = () => {
   const [columns, setColumns] = useState([[], [], []]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const API_ROUTE = `http://localhost:3000/api/images/category/${category}`; // Backend API
 
   // Function to divide images into 3 columns
   const divideIntoColumns = (images, numColumns) => {
@@ -28,7 +26,7 @@ const ImagesByCategory = () => {
       setError("");
 
       try {
-        const response = await axios.get(API_ROUTE);
+        const response = await axiosInstance.get(`/api/images/category/${category}`);
         setImages(response.data.data);
         setColumns(divideIntoColumns(response.data.data, 3));
       } catch (err) {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosConfig";
 
 const AdminRegister = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ const AdminRegister = () => {
     setError(null);
 
     try {
-      const res = await axios.post("http://localhost:3000/api/admins/register", formData);
+      const res = await axiosInstance.post("/api/admins/register", formData);
       setMessage(res.data.message);
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong.");

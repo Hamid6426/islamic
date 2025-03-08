@@ -1,12 +1,12 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axiosConfig";
 
 const LogoutButton = () => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
-            await axios.post("http://localhost:3000/api/users/logout", {}, { withCredentials: true });
+            await axiosInstance.post("/api/users/logout", {}, { withCredentials: true });
 
             // Redirect to Sign In page after logout
             navigate("/signin");

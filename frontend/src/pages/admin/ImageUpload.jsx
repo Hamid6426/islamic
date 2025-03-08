@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosConfig";
 
 const ImageUpload = () => {
   const [title, setTitle] = useState("");
@@ -51,8 +51,8 @@ const ImageUpload = () => {
 
     try {
       console.log("Sending request to upload image...");
-      const response = await axios.post(
-        "http://localhost:3000/api/images/upload",
+      const response = await axiosInstance.post(
+        "/api/images/upload",
         formData,
         {
           withCredentials: true,
