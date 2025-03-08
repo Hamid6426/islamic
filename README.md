@@ -26,3 +26,22 @@ npm run dev
 cd backend
 npm install
 ```
+
+```
+  islamipic-frontend/
+  │── node_modules/        # Dependencies (auto-generated)
+  │── public/              # Static assets (favicon, images, etc.)
+  │── src/                 # Main source code
+  │   ├── assets/          # Static assets (images, styles, etc.)
+  │   ├── components/      # Reusable components
+  │   ├── pages/           # Page components (if using routing)
+  │   ├── App.jsx          # Root component (all routings with react-router-dom)
+  │   ├── main.jsx         # Entry point (import App.jsx, strict mode etc)
+  │   ├── index.css        # Global styles configured with tailwind
+  │── .gitignore           # Git ignore file
+  │── index.html           # Main HTML file
+  │── package.json         # Project metadata & dependencies
+  │── vite.config.js       # Vite configuration
+  │── tailwind.config.js       # Vite configuration
+  │── README.md            # Project documentation
+```
