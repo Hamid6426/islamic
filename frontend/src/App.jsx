@@ -22,11 +22,10 @@ import ImageManagement from "./pages/admin/ImageManagement";
 import Settings from "./pages/admin/Settings";
 import CategoryPage from "./pages/users/CategoryPage";
 import ImagePreview from "./pages/users/ImagePreview";
-import NotFoundPage from "./pages/others/NotFoundPage";
 
 const App = () => {
   return (
-    <Router basename="/">
+    <Router>
       <Routes>
         {/* Public Routes */}
         <Route index element={<Home />} />
@@ -55,10 +54,9 @@ const App = () => {
           </Route>
         </Route>
 
-        {/* Error Handling */}
+        {/* Catch-All Route (404) */}
         <Route path="/403" element={<ForbiddenPage />} />
-        <Route path="/404" element={<NotFoundPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
