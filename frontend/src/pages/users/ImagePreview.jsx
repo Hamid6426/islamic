@@ -35,7 +35,7 @@ const ImagePreview = () => {
   const handleDownload = async () => {
     setDownloading(true);
     try {
-      window.location.href = `http://localhost:3000/api/images/download/${slug}`;
+      window.location.href = `https://islamic-5frn.onrender.com/api/images/download/${slug}`;
     } catch (error) {
       if (error.response && error.response.status === 401) {
         alert("You must be logged in to download this image.");
