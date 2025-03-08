@@ -19,11 +19,9 @@ db().catch((err) => {
   process.exit(1);
 });
 
-const frontendURL = process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : "http://localhost:5173";
-
 // Middleware
 app.use(cors({ 
-  origin: frontendURL, 
+  origin: process.env.FRONTEND_URL, 
   credentials: true 
 }));
 
