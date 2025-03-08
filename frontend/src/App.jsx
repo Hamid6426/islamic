@@ -22,7 +22,7 @@ import ImageManagement from "./pages/admin/ImageManagement";
 import Settings from "./pages/admin/Settings";
 import CategoryPage from "./pages/users/CategoryPage";
 import ImagePreview from "./pages/users/ImagePreview";
-import NotFoundPage from "./pages/others/NotFoundPage.JSX";
+import NotFoundPage from "./pages/others/NotFoundPage";
 
 const App = () => {
   return (
